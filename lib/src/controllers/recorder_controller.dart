@@ -286,8 +286,9 @@ class RecorderController extends ChangeNotifier {
         _isRecording = false;
         _timer?.cancel();
         _recorderTimer?.cancel();
-        if (audioInfo[1] != null) {
-          var duration = int.tryParse(audioInfo[1]!);
+        final lastPosition = audioInfo.length - 1;
+        if (audioInfo[lastPosition] != null) {
+          var duration = int.tryParse(audioInfo[lastPosition]!);
           if (duration != null) {
             recordedDuration = Duration(milliseconds: duration);
             _recordedFileDurationController.add(recordedDuration);
@@ -296,7 +297,7 @@ class RecorderController extends ChangeNotifier {
         elapsedDuration = Duration.zero;
         _setRecorderState(RecorderState.stopped);
         if (callReset) reset();
-        return audioInfo[0];
+        return audioInfo[lastPosition - 1];
       } else {
         throw "Failed stop recording";
       }
